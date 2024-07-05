@@ -1,11 +1,12 @@
 import 'package:bloc_paten/bloc/authbloc/auth_bloc.dart';
 import 'package:bloc_paten/components/textfield/CustomFormField.dart';
+import 'package:bloc_paten/core/const/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -15,14 +16,23 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? _usernameError;
-  String? _passwordError;
 
   @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _validateAndSubmit() {
+    if (_formKey.currentState?.validate() ?? false) {
+      final username = _usernameController.text;
+      final password = _passwordController.text;
+      context.read<AuthBloc>().add(LoginRequested(
+            username: username,
+            password: password,
+          ));
+    }
   }
 
   @override
@@ -49,19 +59,15 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/image/logo.png',
-                    height: 100,
-                  ),
-                  const SizedBox(height: 16.0),
+                  Image.asset('assets/image/logo.png'),
                   CustomFormField(
                     controller: _usernameController,
                     labelText: 'Username',
-                    errorText: _usernameError,
-                    onChanged: (value) {
-                      setState(() {
-                        _usernameError = null;
-                      });
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Username';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 16.0),
@@ -69,11 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     labelText: 'Password',
                     isPassword: true,
-                    errorText: _passwordError,
-                    onChanged: (value) {
-                      setState(() {
-                        _passwordError = null;
-                      });
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Password';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 32.0),
@@ -83,29 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         return const CircularProgressIndicator();
                       }
                       return ElevatedButton(
-                        onPressed: () {
-                          if (_usernameError == null &&
-                              _passwordError == null) {
-                            final username = _usernameController.text;
-                            final password = _passwordController.text;
-                            context.read<AuthBloc>().add(LoginRequested(
-                                  username: username,
-                                  password: password,
-                                ));
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40.0,
-                            vertical: 20.0,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
+                        onPressed: _validateAndSubmit,
+                        style: ElevatedButton.styleFrom(),
                         child: const Text('Login'),
                       );
                     },

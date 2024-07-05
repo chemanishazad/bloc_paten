@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../const/palette.dart';
 import '../const/styles.dart';
 
-// Light Theme
+//! Light Theme
+
 final ThemeData lightTheme = ThemeData(
   primaryColor: Palette.themeColor,
   colorScheme: const ColorScheme.light(
@@ -10,7 +11,7 @@ final ThemeData lightTheme = ThemeData(
     secondary: Palette.themeColor,
     background: Palette.lightBackgroundColor,
   ),
-  scaffoldBackgroundColor: Palette.lightBackgroundColor,
+  scaffoldBackgroundColor: Palette.whiteColor,
   textTheme: TextTheme(
     displayLarge: largeHeadlineTextStyle(Palette.blackColor),
     titleLarge: subheadingTextStyle(Palette.blackColor),
@@ -41,7 +42,7 @@ final ThemeData lightTheme = ThemeData(
   ),
 );
 
-// Dark Theme
+//! Dark Theme
 final ThemeData darkTheme = ThemeData(
     primaryColor: Palette.themeColor,
     colorScheme: const ColorScheme.dark(
