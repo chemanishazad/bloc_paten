@@ -1,9 +1,9 @@
 import 'package:bloc_paten/bloc/authbloc/auth_bloc.dart';
 import 'package:bloc_paten/components/textfield/CustomFormField.dart';
-import 'package:bloc_paten/core/const/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -59,7 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/image/logo.png'),
+                  Image.asset(
+                    'assets/image/logo.png',
+                    height: 40.h,
+                  ),
+                  SizedBox(height: 3.h),
                   CustomFormField(
                     controller: _usernameController,
                     labelText: 'Username',
@@ -70,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16.0),
+                  SizedBox(height: 3.h),
                   CustomFormField(
                     controller: _passwordController,
                     labelText: 'Password',
@@ -82,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 32.0),
+                  SizedBox(height: 3.h),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoading) {
