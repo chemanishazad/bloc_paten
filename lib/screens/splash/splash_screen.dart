@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _controller.forward().whenComplete(() {
-      context.read<AuthBloc>().add(CheckLoginStatus());
+      context.read<AuthBloc>().add(LoginStatusEvent());
     });
   }
 

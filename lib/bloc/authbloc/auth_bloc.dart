@@ -13,13 +13,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
 
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
-    on<LoginRequested>(_onLoginRequested);
-    on<LogoutRequested>(_onLogoutRequested);
-    on<CheckLoginStatus>(_onCheckLoginStatus);
+    on<LoginEvent>(_onLoginRequested);
+    on<LogoutEvent>(_onLogoutRequested);
+    on<LoginStatusEvent>(_onCheckLoginStatus);
   }
 
   Future<void> _onLoginRequested(
-      LoginRequested event, Emitter<AuthState> emit) async {
+      LoginEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
       final user = await authRepository.login(event.username, event.password);
@@ -29,8 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onLogoutRequested(
-      LogoutRequested event, Emitter<AuthState> emit) async {
+  _onLogoutRequested(LogoutEvent event, Emitter<AuthState> emit) async {
     try {
       await authRepository.logout();
       emit(AuthInitial());
@@ -40,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onCheckLoginStatus(
-      CheckLoginStatus event, Emitter<AuthState> emit) async {
+      LoginStatusEvent event, Emitter<AuthState> emit) async {
     final isLoggedIn = await authRepository.isLoggedIn();
     if (isLoggedIn) {
       final user = await authRepository.getUser();

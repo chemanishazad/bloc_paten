@@ -8,12 +8,12 @@ class CustomFormField extends StatefulWidget {
   final String? Function(String?)? validator;
 
   const CustomFormField({
-    super.key,
+    Key? key,
     required this.controller,
     required this.labelText,
     this.isPassword = false,
     this.validator,
-  });
+  }) : super(key: key);
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
@@ -51,35 +51,41 @@ class _CustomFormFieldState extends State<CustomFormField> {
         controller: widget.controller,
         decoration: InputDecoration(
           labelText: widget.labelText,
+          labelStyle: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+          filled: true,
+          fillColor: Colors.grey[100],
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
           errorText: _errorText,
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: const BorderSide(
               color: Colors.red,
               width: 1.0,
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: const BorderSide(
               color: Colors.red,
               width: 2.0,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(
-              color: Colors.grey,
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(
+              color: Colors.grey[400]!,
               width: 1.0,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(
-              color: Colors.blue,
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(
+              color: Colors.blue[600]!,
               width: 2.0,
             ),
           ),

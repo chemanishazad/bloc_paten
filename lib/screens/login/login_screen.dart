@@ -1,54 +1,27 @@
 import 'package:bloc_paten/bloc/authbloc/auth_bloc.dart';
-import 'package:bloc_paten/components/textfield/CustomFormField.dart';
+import 'package:bloc_paten/core/components/components.dart';
+import 'package:bloc_paten/widgets/textfield/CustomFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  void _validateAndSubmit() {
-    if (_formKey.currentState?.validate() ?? false) {
-      final username = _usernameController.text;
-      final password = _passwordController.text;
-      context.read<AuthBloc>().add(LoginRequested(
-            username: username,
-            password: password,
-          ));
-    }
-  }
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Screen'),
-      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
             context.go('/home');
           } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
+            CustomSnackbar.show(context, state.error);
           }
         },
         child: Center(
@@ -93,8 +66,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         return const CircularProgressIndicator();
                       }
                       return ElevatedButton(
-                        onPressed: _validateAndSubmit,
-                        style: ElevatedButton.styleFrom(),
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            final username = _usernameController.text;
+                            final password = _passwordController.text;
+                            context
+                                .read<AuthBloc>()
+                                .add(LoginEvent(username, password));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Please fill in all fields')),
+                            );
+                          }
+                        },
                         child: const Text('Login'),
                       );
                     },
