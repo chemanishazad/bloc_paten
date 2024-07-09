@@ -41,6 +41,9 @@ dependencies:
   go_router: ^14.2.0
   http: ^1.2.1
   responsive_sizer: ^3.3.1
+  file_picker: ^8.0.5
+  url_launcher: ^6.3.0
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

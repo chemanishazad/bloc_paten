@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:bloc_paten/core/domain/api_master.dart';
 import 'package:bloc_paten/repository/model/auth/user_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
@@ -10,7 +9,7 @@ class AuthRepository {
       path: '/authentication',
       method: HttpMethod.$post,
       body: {'username': username, 'password': password},
-      contentType: ContentType.urlEncoded, // Specify the content type here
+      contentType: ContentType.formData,
     );
 
     if (response.statusCode == 200) {

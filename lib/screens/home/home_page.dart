@@ -1,12 +1,32 @@
 import 'package:bloc_paten/bloc/authbloc/auth_bloc.dart';
+import 'package:bloc_paten/core/components/components.dart';
 import 'package:bloc_paten/core/theme/bloc/theme_bloc.dart';
 import 'package:bloc_paten/core/theme/bloc/theme_event.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 
 class MyHomePage extends StatelessWidget {
+  void _handleSingleFilePicked(FilePickerResult? result) {
+    if (result != null) {
+      print('Single file picked: ${result.files.single.name}');
+    } else {
+      print('User canceled the picker');
+    }
+  }
+
+  void _handleMultipleFilesPicked(List<PlatformFile>? files) {
+    if (files != null) {
+      for (var file in files) {
+        print('Multiple file picked: ${file.name}');
+      }
+    } else {
+      print('User canceled the picker');
+    }
+  }
+
   const MyHomePage({super.key});
 
   @override
@@ -80,6 +100,11 @@ class MyHomePage extends StatelessWidget {
                     onPressed: () {},
                     child: Text('text_button'.tr()),
                   ),
+                  SingleFileUpload(onFilePicked: _handleSingleFilePicked),
+                  const SizedBox(height: 16),
+                  MultipleFileUpload(onFilesPicked: _handleMultipleFilesPicked),
+                  const SizedBox(height: 16),
+                  const UrlLauncherComponent(url: 'https://www.example.com'),
                   IconButton(
                     icon: const Icon(Icons.logout),
                     onPressed: () {
@@ -90,11 +115,11 @@ class MyHomePage extends StatelessWidget {
                 ],
               );
             } else if (state is AuthLoading) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (state is AuthInitial) {
-              return Text('Please log in.');
+              return const Text('Please log in.');
             } else {
-              return Text('Something went wrong.');
+              return const Text('Something went wrong.');
             }
           },
         ),

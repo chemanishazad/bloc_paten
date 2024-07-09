@@ -39,7 +39,6 @@ class ApiMaster {
     Map<String, String>? multipartFields,
     List<File>? files,
   }) async {
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
     try {
       if (kDebugMode) {
         print("Request : $method > $path ~ $body");
